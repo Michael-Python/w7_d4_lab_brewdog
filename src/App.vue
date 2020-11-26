@@ -1,38 +1,38 @@
 <template>
   <div>
-    <h1>Munros</h1>
+    <h1>Brewdog API</h1>
     <div class="main-container">
-      <munros-list :munros='munros'></munros-list>
-      <munro-detail :munro='selectedMunro'></munro-detail>
+      <beers-list :beers='beers'></beers-list>
+      <beer-detail :beer='selectedBeer' v-if='selectedBeer'></beer-detail>
     </div>
   </div>
 </template>
 
 <script>
-import MunrosList from './components/MunrosList.vue';
-import MunroDetail from './components/MunroDetail.vue';
+import BeersList from './components/BeersList.vue';
+import BeerDetail from './components/BeerDetail.vue';
 import { eventBus } from './main.js'
 
 export default {
   name: 'app',
   data(){
     return {
-      munros: [],
-      selectedMunro: null
+      beers: [],
+      selectedBeer: null
     };
   },
   mounted(){
-    fetch('https://munroapi.herokuapp.com/munros')
+    fetch('https://api.punkapi.com/v2/beers')
     .then(res => res.json())
-    .then(munros => this.munros = munros)
+    .then(beers => this.beers = beers)
 
-    eventBus.$on("munro-selected", (munro) => {
-      this.selectedMunro = munro;
+    eventBus.$on("beer-selected", (beer) => {
+      this.selectedBeer = beer;
     })
   },
   components: {
-    "munros-list": MunrosList,
-    "munro-detail": MunroDetail
+    "beers-list": BeersList,
+    "beer-detail": BeerDetail
   }
 }
 </script>
