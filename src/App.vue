@@ -1,16 +1,22 @@
 <template>
-  <div>
-    <h1>Brewdog API</h1>
+  <div class="body">
+    <header class="header">Brewdog API</header>
     <div class="main-container">
       <beers-list :beers='beers'></beers-list>
       <beer-detail :beer='selectedBeer' v-if='selectedBeer'></beer-detail>
     </div>
+
+    <button v-if="!favouriteBeers.includes(selectedBeer)" v-on:click="addToFavourites">Add Beer</button>
+    
+    <favourite-beers :favouriteBeers="favouriteBeers"></favourite-beers>
   </div>
+
 </template>
 
 <script>
 import BeersList from './components/BeersList.vue';
 import BeerDetail from './components/BeerDetail.vue';
+import FavouriteBeers from './components/FavouriteBeers.vue'
 import { eventBus } from './main.js'
 
 export default {
@@ -18,7 +24,8 @@ export default {
   data(){
     return {
       beers: [],
-      selectedBeer: null
+      selectedBeer: null,
+      favouriteBeers: []
     };
   },
   mounted(){
@@ -32,8 +39,16 @@ export default {
   },
   components: {
     "beers-list": BeersList,
-    "beer-detail": BeerDetail
+    "beer-detail": BeerDetail,
+    "favourite-beers": FavouriteBeers
+  },
+  methods: {
+    addToFavourites: function(){
+      this.favouriteBeers.push(this.selectedBeer)
+    }
+
   }
+  
 }
 </script>
 
@@ -42,4 +57,19 @@ export default {
     display: flex;
     justify-content: space-between;
   }
+
+  body {
+    font-family: helvetica;
+    margin: 30px
+  }
+
+  .header {
+    margin: 0px;
+    padding: 30px;
+    text-align: center;
+    background: #09355b;
+    color: white;
+    font-size: 30px;
+}
+
 </style>

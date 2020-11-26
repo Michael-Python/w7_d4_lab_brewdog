@@ -1,9 +1,13 @@
 <template>
-  <div>
+  <div v-if="beer">
       <h3>{{beer.name}}</h3>
       <p>Tagline: {{beer.tagline}}</p>
       <p>First Brewed: {{beer.first_brewed}}</p>
-      <img class='image' height=200 :src="beer.image_url"/>
+      <!-- <p>Ingredients: {{beer.ingredients}}</p> -->
+      <img class='small-bottle' :src="beer.image_url"/>
+  </div>
+  <div v-else>
+      <p>Please choose a beer</p>
   </div>
 
 </template>
@@ -18,5 +22,7 @@ export default {
 </script>
 
 <style>
-
+.small-bottle {
+    height: 100px
+}
 </style>
