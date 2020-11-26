@@ -1,28 +1,45 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+    <h1>Munros</h1>
+    <div class="main-container">
+      <munros-list :munros='munros'></munros-list>
+      <munro-detail :munro='selectedMunro'></munro-detail>
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import MunrosList from './components/MunrosList.vue';
+import MunroDetail from './components/MunroDetail.vue';
+import { eventBus } from './main.js'
 
 export default {
-  name: 'App',
+  name: 'app',
+  data(){
+    return {
+      munros: [],
+      selectedMunro: null
+    };
+  },
+  mounted(){
+    fetch('https://munroapi.herokuapp.com/munros')
+    .then(res => res.json())
+    .then(munros => this.munros = munros)
+
+    eventBus.$on("munro-selected", (munro) => {
+      this.selectedMunro = munro;
+    })
+  },
   components: {
-    HelloWorld
+    "munros-list": MunrosList,
+    "munro-detail": MunroDetail
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+  .main-container {
+    display: flex;
+    justify-content: space-between;
+  }
 </style>
